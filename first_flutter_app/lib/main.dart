@@ -11,15 +11,61 @@ class MyApp extends StatelessWidget {
     final wordPair = WordPair.random();
     return MaterialApp(
       title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Welcome to Flutter'),
-        ),
-        body: Center(
-          child: Text(wordPair.asPascalCase),
-        ),
-      ),
-
+      home: RandomWords(),
     );
   }
 }
+
+class RandomWords extends StatefulWidget {
+  @override
+  _RandomWordsState createState() => _RandomWordsState();
+}
+
+class _RandomWordsState extends State<RandomWords> {
+
+  final List<WordPair> _suggestions = <WordPair>[];
+  final TextStyle _biggerFont = const TextStyle(fontSize: 18);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Startup Name Generator'),
+      ),
+      body: _buildSuggestions(),
+    );
+  }
+
+    Widget _buildSuggestions() {
+      return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemBuilder: (BuildContext _context, int i) {
+            if (i.isOdd) {
+              return Divider();
+            }
+
+            final int index = i ~/ 2;
+            // If you've reached the end of the available word
+            // pairings...
+            if (index >= _suggestions.length) {
+              // ...then generate 10 more and add them to the
+              // suggestions list.
+              _suggestions.addAll(generateWordPairs().take(10));
+            }
+            return _buildRow(_suggestions[index]);
+          }
+      );
+    }
+
+    Widget _buildRow(WordPair pair) {
+      return ListTile(
+        title: Text(
+          pair.asPascalCase,
+          style: _biggerFont,
+        ),
+      );
+    }
+}
+
+
+
