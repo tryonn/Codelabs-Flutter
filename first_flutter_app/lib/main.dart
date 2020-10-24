@@ -10,7 +10,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final wordPair = WordPair.random();
     return MaterialApp(
-      title: 'Welcome to Flutter',
+      title: 'Startup Name Generator',
+      theme: ThemeData(
+        primaryColor: Colors.brown
+      ),
       home: RandomWords(),
     );
   }
