@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    FriendlyChatApp(),
+    ChatScreenState(),
   );
 }
 
 String _name = "Your Name";
 
-class FriendlyChatApp extends StatefulWidget {
+class ChatScreenState extends StatefulWidget {
   @override
-  _FriendlyChatAppState createState() => _FriendlyChatAppState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _FriendlyChatAppState extends State<FriendlyChatApp> {
-
+class _ChatScreenState extends State<ChatScreenState> {
+  final List<ChatMessage> _messages = [];
   final _textController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,22 @@ class _FriendlyChatAppState extends State<FriendlyChatApp> {
         appBar: AppBar(
           title: Text('FriendlyChat 55'),
         ),
-        body: _buildTextComposer(),
+        body: Column(
+          children: [
+            Flexible(child: ListView.builder(
+              padding: EdgeInsets.all(8.0),
+              reverse: true,
+              itemBuilder: (_, int index) => _messages[index],
+              itemCount: _messages.length,
+            ),
+            ),
+            Divider(height: 1.0),
+            Container(
+              decoration: BoxDecoration(color: Theme.of(context).cardColor),
+                child: _buildTextComposer(),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -37,9 +53,10 @@ class _FriendlyChatAppState extends State<FriendlyChatApp> {
         children: [
           Flexible(
               child: TextField(
-            controller: _textController,
-            onSubmitted: _handleSubmitted,
-            decoration: InputDecoration.collapsed(hintText: 'Send a message'),
+                  controller: _textController,
+                  onSubmitted: _handleSubmitted,
+                  decoration: InputDecoration.collapsed(hintText: 'Send a message'),
+                  focusNode: _focusNode,
           ),
           ),
           Container(
@@ -62,6 +79,13 @@ class _FriendlyChatAppState extends State<FriendlyChatApp> {
 
   void _handleSubmitted(String value) {
     _textController.clear();
+    ChatMessage message = ChatMessage(
+      text: value,
+    );
+    setState(() {
+      _messages.insert(0, message);
+    });
+    _focusNode.requestFocus();
   }
 }
 
