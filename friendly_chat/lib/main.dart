@@ -6,6 +6,8 @@ void main() {
   );
 }
 
+String _name = "Your Name";
+
 class FriendlyChatApp extends StatefulWidget {
   @override
   _FriendlyChatAppState createState() => _FriendlyChatAppState();
@@ -21,7 +23,7 @@ class _FriendlyChatAppState extends State<FriendlyChatApp> {
       title: 'FriendlyChat',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('FriendlyChat'),
+          title: Text('FriendlyChat 55'),
         ),
         body: _buildTextComposer(),
       ),
@@ -60,5 +62,36 @@ class _FriendlyChatAppState extends State<FriendlyChatApp> {
 
   void _handleSubmitted(String value) {
     _textController.clear();
+  }
+}
+
+
+class ChatMessage extends StatelessWidget {
+  ChatMessage({this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(right: 16.0),
+            child: CircleAvatar(child: Text(_name[0])),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(_name, style: Theme.of(context).textTheme.headline4),
+              Container(
+                margin: EdgeInsets.only(top: 5.0),
+                child: Text(text),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
