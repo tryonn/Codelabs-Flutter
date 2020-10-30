@@ -13,7 +13,7 @@ class ChatScreenState extends StatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreenState> {
+class _ChatScreenState extends State<ChatScreenState> with TickerProviderStateMixin {
   final List<ChatMessage> _messages = [];
   final _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -81,6 +81,10 @@ class _ChatScreenState extends State<ChatScreenState> {
     _textController.clear();
     ChatMessage message = ChatMessage(
       text: value,
+      animationController: AnimationController(
+        duration: const Duration(milliseconds: 700),
+        vsync: this,
+      ),
     );
     setState(() {
       _messages.insert(0, message);
@@ -91,8 +95,9 @@ class _ChatScreenState extends State<ChatScreenState> {
 
 
 class ChatMessage extends StatelessWidget {
-  ChatMessage({this.text});
+  ChatMessage({this.text, this.animationController});
   final String text;
+  final AnimationController animationController;
 
   @override
   Widget build(BuildContext context) {
